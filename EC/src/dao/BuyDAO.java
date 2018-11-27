@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import base.DBManager;
 import beans.BuyDataBeans;
@@ -16,7 +17,6 @@ import beans.BuyDataBeans;
  *
  */
 public class BuyDAO {
-
 
 	/**
 	 * 購入情報登録処理
@@ -45,6 +45,45 @@ public class BuyDAO {
 			System.out.println("inserting buy-datas has been completed");
 
 			return autoIncKey;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new SQLException(e);
+		} finally {
+			if (con != null) {
+				con.close();
+			}
+		}
+	}
+
+	public static ArrayList<BuyDataBeans> getBuyUserId(int userId) throws SQLException {
+		Connection con = null;
+		PreparedStatement st = null;
+		try {
+			con = DBManager.getConnection();
+
+			st = con.prepareStatement("SELECT t_buy.*, m_delivery_method.name, m_delivery_method.price"  +
+					"  FROM t_buy"  +
+					"  INNER JOIN m_delivery_method ON t_buy.delivery_method_id = m_delivery_method.id"  +
+					"  WHERE user_id = ? ORDER BY t_buy.create_date DESC");
+			st.setInt(1, userId);
+
+			ResultSet rs = st.executeQuery();
+			ArrayList<BuyDataBeans> udbList = new ArrayList<>();
+
+			while (rs.next()) {
+				BuyDataBeans udb = new BuyDataBeans();
+				udb.setId(rs.getInt("id"));
+				udb.setUserId(rs.getInt("user_id"));
+				udb.setTotalPrice(rs.getInt("total_price"));
+				udb.setBuyDate(rs.getTimestamp("create_date"));
+				udb.setDelivertMethodId(rs.getInt("delivery_method_id"));
+				udb.setDeliveryMethodPrice(rs.getInt("price"));
+				udb.setDeliveryMethodName(rs.getString("name"));
+				udbList.add(udb);
+			}
+
+			System.out.println("searching ItemDataBeansList by BuyID has been completed");
+			return udbList;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			throw new SQLException(e);
