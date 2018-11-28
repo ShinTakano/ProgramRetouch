@@ -64,7 +64,7 @@ public class BuyDAO {
 			st = con.prepareStatement("SELECT t_buy.*, m_delivery_method.name, m_delivery_method.price"  +
 					"  FROM t_buy"  +
 					"  INNER JOIN m_delivery_method ON t_buy.delivery_method_id = m_delivery_method.id"  +
-					"  WHERE user_id = ? ORDER BY t_buy.create_date DESC");
+					"  WHERE user_id = ? ORDER BY create_date DESC");
 			st.setInt(1, userId);
 
 			ResultSet rs = st.executeQuery();

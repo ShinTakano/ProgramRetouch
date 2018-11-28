@@ -66,7 +66,7 @@
 								<tr>
 									<td class="center"><a href="UserBuyHistoryDetail?buy_id=${udb.id}" class="btn-floating btn waves-effect waves-light "> <i class="material-icons">details</i></a></td>
 									<td class="center">${udb.formatDate}</td>
-									<td class="center">${udb.deliveryMethodName }</td>
+									<td class="center">${udb.deliveryMethodName}</td>
 									<td class="center">${udb.totalPrice}</td>
 								</tr>
 								</c:forEach>

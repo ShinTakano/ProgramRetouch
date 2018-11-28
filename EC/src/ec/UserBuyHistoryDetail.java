@@ -25,10 +25,11 @@ public class UserBuyHistoryDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		try {
 
-			int buyId = Integer.parseInt(request.getParameter("buy_Id"));
+			int buyId = Integer.parseInt(request.getParameter("buy_id"));
 
 			BuyDataBeans bdb = BuyDAO.getBuyDataBeansByBuyId(buyId);
 			request.setAttribute("bdb", bdb);
